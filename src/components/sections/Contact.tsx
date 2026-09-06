@@ -41,7 +41,7 @@ export function Contact() {
               <span /> Contact
             </p>
           </Reveal>
-          <h2 className="display-xl text-[clamp(2.75rem,6.5vw,6rem)]">
+          <h2 className="display-xl text-[clamp(2.75rem,5.2vw,4.75rem)]">
             <SplitWords text="Let's make" />
             <br />
             <SplitWords text="something" wordClassName="text-gradient" delay={0.2} />
