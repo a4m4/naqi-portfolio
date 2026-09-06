@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Naqi Shah Kazmi — Portfolio
 
-## Getting Started
+High-end, animated portfolio for cinematographer & director Naqi Shah Kazmi.
+Built with **Next.js 16 (App Router) · TypeScript · Tailwind CSS v4 · Framer Motion · Lenis**.
 
-First, run the development server:
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
+npm run build      # production build
+npm start          # serve the production build
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Edit the content
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Everything shown on the site lives in **`src/data/site.ts`** — name, bio, socials,
+stats, awards, projects, services, clients. All copy in there is placeholder text;
+replace it with real details.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Adding real stills / posters
 
-## Learn More
+1. Drop the image into `public/work/` (e.g. `public/work/echoes.jpg`).
+2. Set `image: "/work/echoes.jpg"` on the project in `src/data/site.ts`.
+   Until an image is set, a designed gradient placeholder is shown.
+3. Optional: set `video` to a YouTube/Vimeo URL so the card links to the film.
 
-To learn more about Next.js, take a look at the following resources:
+### Showreel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Set `site.showreelEmbed` to a YouTube or Vimeo **embed** URL
+(e.g. `https://www.youtube.com/embed/VIDEO_ID?autoplay=1` or `https://player.vimeo.com/video/ID?autoplay=1`).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Portrait
 
-## Deploy on Vercel
+In `src/components/sections/About.tsx`, replace the gradient block with
+`<Image src="/portrait.jpg" alt="…" fill className="object-cover" />` after adding
+`public/portrait.jpg`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Contact form
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The form ships with a zero-backend `mailto:` handoff so it works immediately.
+To send real emails, replace `onSubmit` in `src/components/sections/Contact.tsx`
+with a Server Action using [Resend](https://resend.com) or point the form at
+[Formspree](https://formspree.io).
+
+## Project structure
+
+```
+src/
+  app/                 layout (fonts, metadata), page, global styles & design tokens
+  data/site.ts         ← all content
+  fonts/               self-hosted Syne + Manrope (OFL)
+  components/
+    providers/         SmoothScroll (Lenis)
+    ui/                Reveal/SplitWords, MagneticButton, Poster, Cursor, Preloader…
+    sections/          Nav, Hero, Marquee, Showreel, Work, About, Services, Contact, Footer
+```
+
+## Design notes
+
+- Colours & type scale are CSS variables / utilities in `src/app/globals.css`
+  (`--orange`, `--magenta`, `--violet`, `--teal`; `display-xl/lg/md`, `text-gradient`…).
+- Animations respect `prefers-reduced-motion`; smooth scroll and the custom cursor
+  are only enabled on mouse/trackpad devices — touch devices keep native scrolling.
+- Fully responsive: fluid `clamp()` type, mobile full-screen menu, single-column grids.
+
+## Deploy
+
+Push to GitHub and import into [Vercel](https://vercel.com) — zero config.
+Remember to update `site.url` in `src/data/site.ts` for correct Open Graph metadata.
