@@ -26,7 +26,13 @@ export function Contact() {
     const body = encodeURIComponent(
       `Name: ${fd.get("name")}\nEmail: ${fd.get("email")}\nProject: ${fd.get("project")}\n\n${fd.get("message")}`,
     );
-    window.location.href = `mailto:${site.email}?subject=${subject}&body=${body}`;
+    // A real anchor click is more reliable than window.location for mailto:
+    const a = document.createElement("a");
+    a.href = `mailto:${site.email}?subject=${subject}&body=${body}`;
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
     setSent(true);
   };
 
@@ -90,9 +96,11 @@ export function Contact() {
               whileTap={{ scale: 0.98 }}
               className="mt-10 inline-flex w-full items-center justify-center gap-3 rounded-full bg-fg py-4 text-sm font-semibold text-bg transition-colors hover:bg-orange sm:w-auto sm:px-8"
             >
-              {sent ? "Opening your mail app…" : "Send message"} <Send className="size-4" />
+              {sent ? "Opened your mail app" : "Send message"} <Send className="size-4" />
             </motion.button>
-            <p className="mt-4 text-xs text-muted">Usually replies within 24 hours.</p>
+            <p className="mt-4 text-xs text-muted">
+              Usually replies within 24 hours.{sent && <> If your mail app didn&apos;t open, email <a href={`mailto:${site.email}`} className="text-fg underline">{site.email}</a> directly.</>}
+            </p>
           </form>
         </Reveal>
       </div>
